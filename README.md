@@ -2,7 +2,7 @@ FaceTrack
 ---------
 
 Example of small shared library, an dlib wrapper for face tracking and SVM based emotion classification.
-![](screenshot.gif)
+![](screenshoot.gif)
 
 
 Motivation
