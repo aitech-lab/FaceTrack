@@ -30,7 +30,16 @@ int main(void) {
     subscriber.connect("tcp://localhost:5563");
     subscriber.setsockopt( ZMQ_SUBSCRIBE, "Tracking", 1);
 
-    while (1) {
+    SDL_Event event;
+    int quit = 0;
+    while (!quit) {
+
+        while(SDL_PollEvent(&event)) {
+            if (event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_ESCAPE) {
+                quit = true;
+            }
+        }
+        
         //  Read envelope with address
         string address = s_recv(subscriber);
         message_t msg;

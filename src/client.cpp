@@ -25,8 +25,16 @@ int main(void) {
         0);
     SDL_Surface* surface = SDL_GetWindowSurface(window);
     surface->format->format = SDL_PIXELFORMAT_RGB24;
+    SDL_Event event;
+    int quit = 0;
+    while (!quit) {
 
-    while (1) {
+        while(SDL_PollEvent(&event)) {
+            if (event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_ESCAPE) {
+                quit = true;
+            }
+        }
+        
         //  Read envelope with address
         SDL_Surface* image = SDL_CreateRGBSurfaceFrom(
             faceTrack->face, 
