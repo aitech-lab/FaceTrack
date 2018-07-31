@@ -24,7 +24,9 @@ int main(void) {
         256,
         0);
     SDL_Surface* surface = SDL_GetWindowSurface(window);
-    surface->format->format = SDL_PIXELFORMAT_RGB24;
+    // surface->format->format = SDL_PIXELFORMAT_RGB24;
+
+    
     SDL_Event event;
     int quit = 0;
     while (!quit) {
@@ -46,8 +48,25 @@ int main(void) {
             0x00ff00,
             0x0000ff,
             0x000000);
+
+        SDL_Renderer* renderer = SDL_CreateSoftwareRenderer(image);
+        SDL_SetRenderDrawColor(renderer, 255,255,255,40);
+        for(int i=0; i<5; i++) {
+            int e = faceTrack->emotions[i]*20.0;
+            SDL_Rect r;
+            if (e > 0) 
+            	r = {i*10,128-e, 9, e};
+            else 
+            	r = {i*10,128, 9, -e};
+            SDL_RenderFillRect(renderer, &r);
+        } 
+        for(int i=0; i<68; i++) {
+            SDL_Rect r = {(int)faceTrack->landmarks[i*2]-1, (int)faceTrack->landmarks[i*2+1]-1, 2, 2};
+            SDL_RenderFillRect(renderer, &r);
+        } 
         SDL_BlitSurface(image, NULL, surface, NULL);
         SDL_FreeSurface(image);
+        SDL_RenderPresent(renderer);
         SDL_UpdateWindowSurface(window);
         SDL_Delay(30);
     }
@@ -56,7 +75,7 @@ int main(void) {
     SDL_Quit();
 
     shmdt(faceTrack);
-    shmctl(shmid, IPC_RMID, NULL);
+    // shmctl(shmid, IPC_RMID, NULL);
 
     return 0;
 }
