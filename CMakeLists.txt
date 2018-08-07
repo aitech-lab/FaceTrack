@@ -1,5 +1,9 @@
 cmake_minimum_required(VERSION 3.9)
-project(face_tracker VERSION 1.0 DESCRIPTION "dlib based face tracking library")
+project(
+    FaceTrack 
+    VERSION 1.0 
+    DESCRIPTION "dlib based face tracking library"
+    LANGUAGES CXX)
 include_directories(${CURRENT_SOURCE_DIR}/include)
 add_library(face_tracker SHARED
     src/FaceTracker.cpp
@@ -9,6 +13,9 @@ add_library(face_tracker SHARED
 )
 
 include(../lib/dlib/dlib/cmake)
+set(${PROJECT_NAME}_INCLUDE_DIRS
+    ${PROJECT_SOURCE_DIR}/include
+    CACHE INTERNAL "${PROJECT_NAME}: Inclde directories" FORCE)
 
 # ZMQ
 add_executable(face_tracker_server_zmq src/server_zmq.cpp)
