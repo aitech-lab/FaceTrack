@@ -1,13 +1,14 @@
 #pragma once
 
-#define CHIP_SIZE 256
-#define LANDMARKS 68
-#define EMOTIONS  5
+#define FT_CHIP_SIZE 256
+#define FT_LANDMARKS 68
+#define FT_EMOTIONS  5
+#define FT_COLORS 4
 
 typedef struct FaceTrack {                
-    float landmarks[LANDMARKS*2];                
-    float emotions[EMOTIONS];                    
-    unsigned char face[CHIP_SIZE*CHIP_SIZE*3];
+    float landmarks[FT_LANDMARKS*2];                
+    float emotions[FT_EMOTIONS];                    
+    unsigned char face[FT_CHIP_SIZE*FT_CHIP_SIZE*FT_COLORS];
 } FaceTrack;
 
 class FaceTracker {

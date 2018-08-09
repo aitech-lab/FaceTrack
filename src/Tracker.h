@@ -12,18 +12,17 @@ class Tracker {
     std::thread tracking_th;
     std::atomic<bool> do_track;
     dlib::chip_details chip;
-    int chip_size;
 
     class FaceTracker* interface;
     class Ffmpeg* ffmpeg;
     class Emotions* emotions;
 
-    dlib::matrix<dlib::rgb_pixel> face_image;
+    dlib::matrix<dlib::rgb_alpha_pixel> face_image;
     dlib::rectangle               face_rect;
     dlib::full_object_detection   face_shape;
     
 public:
-    Tracker(Ffmpeg* ffmpeg, FaceTracker* interface, int chip_size);
+    Tracker(Ffmpeg* ffmpeg, FaceTracker* interface);
     ~Tracker();
     double fps;
     void getLandmarks(float* landmarks);

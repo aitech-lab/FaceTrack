@@ -7,7 +7,7 @@ using namespace std;
 FaceTracker::FaceTracker(char* device, int w, int h):
 w(w), h(h), callback(NULL) {
     ffmpeg  = new Ffmpeg(device, w, h);
-    tracker = new Tracker(ffmpeg, this, CHIP_SIZE);
+    tracker = new Tracker(ffmpeg, this);
 }
 
 FaceTracker::~FaceTracker() {

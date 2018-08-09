@@ -2,6 +2,7 @@
 #include <cstring>
 #include <sys/ipc.h>
 #include <sys/shm.h>
+
 #include "../include/FaceTracker.h"
 
 using namespace std;
@@ -20,7 +21,8 @@ int main(void) {
     
     key_t key = ftok("track", 65);
     int shmid = shmget(key, size, 0666|IPC_CREAT);
-    faceTrack = (FaceTrack*) shmat(shmid, (void*)0, 0); 
+    faceTrack = (FaceTrack*) shmat(shmid, (void*)0, 0);
+
     tracker.setCallback(callback);
     getchar();
 

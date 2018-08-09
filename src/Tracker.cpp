@@ -15,10 +15,10 @@ using namespace std;
 static frontal_face_detector detector;
 static shape_predictor pose_model_68;
 static shape_predictor pose_model_5;
-static matrix<rgb_pixel> _face_image;
+static matrix<rgb_alpha_pixel> _face_image;
 
-Tracker::Tracker(Ffmpeg* ffmpeg, FaceTracker* interface, int chip_size): 
-ffmpeg(ffmpeg), interface(interface), chip_size(chip_size) {
+Tracker::Tracker(Ffmpeg* ffmpeg, FaceTracker* interface): 
+ffmpeg(ffmpeg), interface(interface) {
     printf("Tracker\n");
     try {    
         // Load face detection and pose estimation models.
@@ -33,8 +33,8 @@ ffmpeg(ffmpeg), interface(interface), chip_size(chip_size) {
     }
 
     float m = (ffmpeg->w-ffmpeg->h)/2.0;
-    chip = chip_details(rectangle(m,0,ffmpeg->w-m, ffmpeg->h), chip_size*chip_size);
-    // chip = chip_details(rectangle(200,200,250,250), chip_size);
+    chip = chip_details(rectangle(m,0,ffmpeg->w-m, ffmpeg->h), FT_CHIP_SIZE*FT_CHIP_SIZE);
+    // chip = chip_details(rectangle(200,200,250,250), FT_CHIP_SIZE);
      
     // Launch read thread 
     do_track = true;
@@ -67,7 +67,7 @@ void Tracker::tracking_fun()  {
         clock_t begin = clock();
         
         raw_image<rgb_pixel> img(ffmpeg->w, ffmpeg->h, ffmpeg->c, ffmpeg->get_frame());
-        chip_details default_chip(rectangle(m, 0, ffmpeg->w-m, ffmpeg->h), chip_size*chip_size);
+        chip_details default_chip(rectangle(m, 0, ffmpeg->w-m, ffmpeg->h), FT_CHIP_SIZE*FT_CHIP_SIZE);
     
         array2d<unsigned char> gray;
         assign_image(gray, img);
@@ -92,12 +92,12 @@ void Tracker::tracking_fun()  {
         
             // extract_image_chip(img, get_face_chip_details(shapes[0], 150, 0.25), face);
             float k = 0.8;
-            chip_details _chip = get_face_chip_details(_face_shape, chip_size, k);
+            chip_details _chip = get_face_chip_details(_face_shape, FT_CHIP_SIZE, k);
             smooth_chips(chip, _chip, 4.0);
             extract_image_chip(img, chip, _face_image);
 
-            float m = k*chip_size/(1.0+2.0*k)-15.0;
-            rectangle _face_rect(m, m, chip_size-m, chip_size-m);
+            float m = k*FT_CHIP_SIZE/(1.0+2.0*k)-15.0;
+            rectangle _face_rect(m, m, FT_CHIP_SIZE-m, FT_CHIP_SIZE-m);
 
             //std::vector<rectangle> _face_rects2 = detector(_face_image);
             //if(_face_rects2.size() == 0) continue;
@@ -135,7 +135,7 @@ void Tracker::getLandmarks(float* landmarks) {
 
 void Tracker::getFaceChip(unsigned char* faceChip) {
     if(face_image.size() == 0) return;
-    memcpy(faceChip, (unsigned char*) face_image.begin(), chip_size*chip_size*3);
+    memcpy(faceChip, (unsigned char*) face_image.begin(), FT_CHIP_SIZE*FT_CHIP_SIZE*FT_COLORS);
 }
 
 void Tracker::getEmotions(float* emo) {

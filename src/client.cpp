@@ -2,6 +2,7 @@
 #include <sys/ipc.h>
 #include <sys/shm.h>
 #include <SDL2/SDL.h>
+
 #include "../include/FaceTracker.h"
 
 using namespace std;
@@ -20,11 +21,11 @@ int main(void) {
         "Tracking",
         SDL_WINDOWPOS_UNDEFINED,
         SDL_WINDOWPOS_UNDEFINED,
-        256,
-        256,
+        FT_CHIP_SIZE,
+        FT_CHIP_SIZE,
         0);
     SDL_Surface* surface = SDL_GetWindowSurface(window);
-    // surface->format->format = SDL_PIXELFORMAT_RGB24;
+    surface->format->format = SDL_PIXELFORMAT_RGBA32;
 
     
     SDL_Event event;
@@ -40,10 +41,10 @@ int main(void) {
         //  Read envelope with address
         SDL_Surface* image = SDL_CreateRGBSurfaceFrom(
             faceTrack->face, 
-            256,   // width
-            256,   // height
-            24,    // depth
-            256*3, // pitch
+            FT_CHIP_SIZE,   // width
+            FT_CHIP_SIZE,   // height
+            FT_COLORS*8,    // depth
+            FT_CHIP_SIZE*FT_COLORS, // pitch
             0xff0000,
             0x00ff00,
             0x0000ff,
