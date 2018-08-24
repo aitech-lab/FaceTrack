@@ -5,10 +5,11 @@
 #define FT_EMOTIONS  5
 #define FT_COLORS 4
 
-typedef struct FaceTrack {                
+typedef struct FaceTrack {
     float landmarks[FT_LANDMARKS*2];                
     float emotions[FT_EMOTIONS];                    
     unsigned char face[FT_CHIP_SIZE*FT_CHIP_SIZE*FT_COLORS];
+    int   faceCount;
 } FaceTrack;
 
 class FaceTracker {

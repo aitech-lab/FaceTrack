@@ -1,4 +1,5 @@
 #include <cstdio>
+#include <cstdlib>
 #include <cstring>
 #include <sys/ipc.h>
 #include <sys/shm.h>
@@ -18,11 +19,11 @@ void callback() {
 }
 
 int main(void) {
-    
+    system("touch track");
     key_t key = ftok("track", 65);
     int shmid = shmget(key, size, 0666|IPC_CREAT);
     faceTrack = (FaceTrack*) shmat(shmid, (void*)0, 0);
-
+    
     tracker.setCallback(callback);
     getchar();
 

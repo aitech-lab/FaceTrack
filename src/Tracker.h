@@ -20,6 +20,7 @@ class Tracker {
     dlib::matrix<dlib::rgb_alpha_pixel> face_image;
     dlib::rectangle               face_rect;
     dlib::full_object_detection   face_shape;
+    int face_count;
     
 public:
     Tracker(Ffmpeg* ffmpeg, FaceTracker* interface);
@@ -28,4 +29,5 @@ public:
     void getLandmarks(float* landmarks);
     void getFaceChip(unsigned char* faceChip);
 	void getEmotions(float* emo);
+	int  getFaceCount();
 };

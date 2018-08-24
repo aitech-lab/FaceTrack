@@ -16,6 +16,7 @@ FaceTracker::~FaceTracker() {
 }
 
 void FaceTracker::update() {
+    faceTrack.faceCount = tracker->getFaceCount();
     tracker->getLandmarks(faceTrack.landmarks);
     tracker->getEmotions (faceTrack.emotions );
     tracker->getFaceChip (faceTrack.face     );
@@ -24,6 +25,7 @@ void FaceTracker::update() {
 
 void FaceTracker::log() {
 	printf("Tracker speed: %2.1ffps\n", tracker->fps);
+	printf("Faces: %d\n", faceTrack.faceCount);
     printf("Emotions: \n");
     for(int i=0; i < 5; i++) printf("%0.1f ", faceTrack.emotions[i]); 
     printf("\n");

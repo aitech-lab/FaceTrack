@@ -35,7 +35,8 @@ ffmpeg(ffmpeg), interface(interface) {
     float m = (ffmpeg->w-ffmpeg->h)/2.0;
     chip = chip_details(rectangle(m,0,ffmpeg->w-m, ffmpeg->h), FT_CHIP_SIZE*FT_CHIP_SIZE);
     // chip = chip_details(rectangle(200,200,250,250), FT_CHIP_SIZE);
-     
+    face_count = 0;
+
     // Launch read thread 
     do_track = true;
     thread th(&Tracker::tracking_fun, this); swap(th, tracking_th);
@@ -75,7 +76,9 @@ void Tracker::tracking_fun()  {
         // Get face rectangles 
         std::vector<rectangle> _face_rects = detector(gray);
         if(_face_rects.size() > 0) {
-
+            // face counter
+            face_count = _face_rects.size();
+            
             // get face closest to center
             float min_l = 1e9;
             int closest = 0;
@@ -109,6 +112,7 @@ void Tracker::tracking_fun()  {
             swap(face_image, _face_image);
             swap(face_rect, _face_rect);
         } else {
+            face_count = 0;
             smooth_chips(chip, default_chip, 50.0); 
             extract_image_chip(img, chip, _face_image);
             swap(face_image, _face_image);
@@ -140,4 +144,8 @@ void Tracker::getFaceChip(unsigned char* faceChip) {
 
 void Tracker::getEmotions(float* emo) {
     memcpy(emo, &emotions->emotions[0], 5*sizeof(float));
+}
+
+int Tracker::getFaceCount() {
+    return face_count;
 }
