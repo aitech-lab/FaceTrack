@@ -34,7 +34,7 @@ int main(int argc, char** argv) {
 
     if (argc <=1) return printf("usage: app /dev/video0\n");
 
-    tracker = new FaceTracker(argv[1], 800, 600);
+    tracker = new FaceTracker(argv[1], 1024, 576);
     
     system("touch track");
     key_t key = ftok("track", 65);
