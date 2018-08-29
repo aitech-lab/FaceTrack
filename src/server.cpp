@@ -1,6 +1,8 @@
 #include <cstdio>
 #include <cstdlib>
 #include <cstring>
+#include <unistd.h>
+#include <signal.h>
 #include <sys/ipc.h>
 #include <sys/shm.h>
 
@@ -18,6 +20,16 @@ void callback() {
     memcpy(faceTrack, &tracker->faceTrack, size);
 }
 
+void ctrl_c(int s){
+    printf("Caught signal %d\n",s);
+
+    tracker->setCallback(0);
+    delete(tracker);
+    shmdt(faceTrack);
+    
+    exit(0); 
+}
+
 int main(int argc, char** argv) {
 
     if (argc <=1) return printf("usage: app /dev/video0\n");
@@ -31,11 +43,13 @@ int main(int argc, char** argv) {
     
     tracker->setCallback(callback);
 
-    // wait for enter key
-    getchar();
-    
-    tracker->setCallback(0);
-    delete(tracker);
-    
-    shmdt(faceTrack);
+    // ctrl_c
+    struct sigaction sigIntHandler;
+    sigIntHandler.sa_handler = ctrl_c;
+    sigemptyset(&sigIntHandler.sa_mask);
+    sigIntHandler.sa_flags = 0;
+    sigaction(SIGINT, &sigIntHandler, NULL);
+
+    pause();
+ 
 }
