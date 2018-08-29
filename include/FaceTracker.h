@@ -1,6 +1,6 @@
 #pragma once
 
-#define FT_CHIP_SIZE 512
+#define FT_CHIP_SIZE 256
 #define FT_LANDMARKS 68
 #define FT_EMOTIONS  5
 #define FT_COLORS 4

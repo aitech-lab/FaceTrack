@@ -28,6 +28,6 @@ public:
     double fps;
     void getLandmarks(float* landmarks);
     void getFaceChip(unsigned char* faceChip);
-	void getEmotions(float* emo);
-	int  getFaceCount();
+    void getEmotions(float* emo);
+    int  getFaceCount();
 };
