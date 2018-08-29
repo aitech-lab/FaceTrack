@@ -17,10 +17,10 @@ w(w), h(h), c(3) {
         " -input_format yuyv422"// format
         " -i %1$s"              // input file
         // " -vf \"pad=width=640:height=640:x=0:y=80:color=black\""
-        " -pix_fmt rgb24"        // output format
+        " -pix_fmt rgb24"       // output format
         " -f rawvideo"          // container format
         " -"                    // pipe output
-        " 2>>in.log";           // stderr to file
+        " 2>>/dev/null";        // stderr to null
     //snprintf(cmd, 1024, tpl, file, w, h, seek, length);
     snprintf(cmd, 1024, tpl, device, w, h);
     stream =  popen(cmd, "r");

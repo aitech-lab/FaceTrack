@@ -11,6 +11,7 @@ w(w), h(h), callback(NULL) {
 }
 
 FaceTracker::~FaceTracker() {
+    printf("Stoping tracker\n");
     delete tracker;
     delete ffmpeg;
 }
