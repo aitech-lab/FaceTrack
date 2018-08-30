@@ -80,6 +80,10 @@ void Emotions::update(full_object_detection& det) {
     }
 
 }
+void Emotions::damp() {
+    printf("DAMP\n");
+    for(int i=0; i<emotions.size(); i++) emotions[i]*=0.9;
+}
 
 // 
 point get_center(full_object_detection& d) {

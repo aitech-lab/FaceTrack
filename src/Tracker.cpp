@@ -105,15 +105,18 @@ void Tracker::tracking_fun()  {
             //std::vector<rectangle> _face_rects2 = detector(_face_image);
             //if(_face_rects2.size() == 0) continue;
             _face_shape = pose_model_68(_face_image, _face_rect); 
-            if(face_shape.num_parts() == 68)
+            if(face_shape.num_parts() == 68){
                 for(int i=0; i<68; i++) face_shape.part(i)+= (_face_shape.part(i)-face_shape.part(i))/2.0;
-            else
+            } else {
                 swap(face_shape, _face_shape);
+            }
             swap(face_image, _face_image);
             swap(face_rect, _face_rect);
+            emotions->update(face_shape);
         } else {
             face_count = 0;
-            smooth_chips(chip, default_chip, 50.0); 
+            smooth_chips(chip, default_chip, 50.0);
+            emotions->damp();
             extract_image_chip(img, chip, _face_image);
             swap(face_image, _face_image);
         }
@@ -121,8 +124,7 @@ void Tracker::tracking_fun()  {
         clock_t end = clock();
         fps = CLOCKS_PER_SEC/double(end-begin);
 
-        emotions->update(face_shape);
-        interface->update();
+        if(interface!=NULL) interface->update();
     }
 }
 

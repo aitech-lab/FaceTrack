@@ -25,6 +25,7 @@ public:
     void train();
     double predict(dlib::full_object_detection& det);
     void update(dlib::full_object_detection& det);
+    void damp();
     
     std::vector<std::vector<dlib::full_object_detection>> faces;
     std::vector<float> emotions;
