@@ -5,7 +5,7 @@ project(
     DESCRIPTION "dlib based face tracking library"
     LANGUAGES CXX)
 
-set(CMAKE_CXX_FLAGS "-fPIC -g -O0")
+set(CMAKE_CXX_FLAGS "-fPIC -g -O3")
 include_directories(${CURRENT_SOURCE_DIR}/include)
 add_library(face_tracker SHARED
     src/FaceTracker.cpp
@@ -30,9 +30,14 @@ target_link_libraries(face_tracker_client_zmq SDL2 zmq)
 # SHARED MEMORY
 add_executable(face_tracker_server src/server.cpp)
 target_link_libraries(face_tracker_server face_tracker dlib::dlib)
-
 add_executable(face_tracker_client src/client.cpp)
 target_link_libraries(face_tracker_client SDL2)
 
 add_executable(face_tracker_test src/test.cpp)
 target_link_libraries(face_tracker_test face_tracker dlib::dlib)
+
+add_executable(server_mmap src/server_mmap.cpp)
+target_link_libraries(server_mmap face_tracker dlib::dlib pthread rt)
+
+add_executable(client_mmap src/client_mmap.cpp)
+target_link_libraries(client_mmap face_tracker SDL2 pthread rt)
