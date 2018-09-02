@@ -64,7 +64,7 @@ int main(void) {
                 quit = true;
             }
         }
-
+        
         SDL_Renderer* renderer = SDL_CreateSoftwareRenderer(image);
         SDL_SetRenderDrawColor(renderer, 255,255,255,40);
         for(int i=0; i<5; i++) {
@@ -79,8 +79,15 @@ int main(void) {
         for(int i=0; i<68; i++) {
             SDL_Rect r = {(int)faceTrack->landmarks[i*2]-1, (int)faceTrack->landmarks[i*2+1]-1, 2, 2};
             SDL_RenderFillRect(renderer, &r);
-        } 
+        }
+
+        // semaphore wait 1 sec max
+        struct timespec tm; clock_gettime(CLOCK_REALTIME, &tm); tm.tv_sec += 1;
+        // check & lock semaphore
+        sem_timedwait(sem, &tm);
         SDL_BlitSurface(image, NULL, surface, NULL);
+        //unlock semaphore
+        sem_post(sem);
         SDL_RenderPresent(renderer);
         SDL_UpdateWindowSurface(window);
         SDL_Delay(30);
