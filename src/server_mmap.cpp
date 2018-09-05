@@ -53,7 +53,7 @@ int main(int argc, char** argv) {
     int shm = shm_open(
         SHM_SEM_NAME, 
         O_CREAT | O_RDWR, 
-        S_IRUSR|S_IWUSR);
+        S_IRUSR | S_IWUSR);
     faceTrack = (FaceTrack*)mmap(
         0, size, 
         PROT_READ | PROT_WRITE, 

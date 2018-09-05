@@ -6,6 +6,7 @@
 // ffmpeg -f v4l2 -i /dev/video0 -f rawvideo -pix_fmt rgb24  pipe:1 > video
 Ffmpeg::Ffmpeg(char* device, int w, int h):
 w(w), h(h), c(3) {
+    frame_count = 0;
     frame_size = w*h*c;
     char cmd[1024];
     char* tpl = 
@@ -46,6 +47,9 @@ void Ffmpeg::read_fun() {
 	while(stream!=NULL &&  do_work) {
         size_t l = fread(&buffer[buffer_id*frame_size], frame_size, 1, stream);
         if (l <= 0) break;
+        frame_count++;
+        //size_t* fc = (size_t*)&buffer[buffer_id*frame_size]; 
+        //*fc = frame_count;
     	buffer_id = !buffer_id;
     }
     printf("Stop reading\n");

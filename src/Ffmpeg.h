@@ -11,6 +11,7 @@ class Ffmpeg {
 	void read_fun();
     int buffer_id;
     size_t frame_size;
+    size_t frame_count;
 
 public:
     Ffmpeg(char* device, int w, int h);
