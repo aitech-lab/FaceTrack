@@ -76,7 +76,7 @@ int main(int argc, char** argv) {
     sigaction(SIGINT, &sigIntHandler, NULL);
 
     // Tracker
-    tracker = new FaceTracker(argv[1], 640, 480);    
+    tracker = new FaceTracker(argv[1], 1024, 576);    
     tracker->setCallback(callback);
 
     pause();
