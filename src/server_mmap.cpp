@@ -47,7 +47,11 @@ void ctrl_c(int s){
 
 int main(int argc, char** argv) {
 
-    if (argc <=1) return printf("usage: app /dev/video0\n");
+    if (argc <4) return printf(
+        "usage:\n"
+            "\tapp /dev/video0 640 480\n"
+        "available formats:\n"
+            "\tffmpeg -f v4l2 -list_formats all -i /dev/video0\n");
 
     // shared memory    
     int shm = shm_open(
@@ -76,7 +80,7 @@ int main(int argc, char** argv) {
     sigaction(SIGINT, &sigIntHandler, NULL);
 
     // Tracker
-    tracker = new FaceTracker(argv[1], 640, 480);    
+    tracker = new FaceTracker(argv[1], atoi(argv[2]), atoi(argv[3]));    
     tracker->setCallback(callback);
 
     pause();
